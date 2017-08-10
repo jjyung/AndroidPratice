@@ -2,6 +2,7 @@ package com.example.zhiyang.myapplication.activity;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -59,6 +60,10 @@ public class DemoActivity extends AppCompatActivity {
         element = new HashMap<>();
         element.put("name", "TESTDENO2");
         dataList.add(element);
+        // MapActivity
+        element = new HashMap<>();
+        element.put("name", "MapActivity");
+        dataList.add(element);
 
         return dataList;
     }
@@ -72,7 +77,7 @@ public class DemoActivity extends AppCompatActivity {
                     case "TESTDEMO1":
                         new AlertDialog.Builder(demoContext)
                                 .setTitle("TESTDEMO1")
-                                .setMessage("You clicked textdemo1.")
+                                .setMessage("You clicked testdemo1.")
                                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -82,12 +87,25 @@ public class DemoActivity extends AppCompatActivity {
                     case "TESTDENO2":
                         new AlertDialog.Builder(demoContext)
                                 .setTitle("TESTDEMO2")
-                                .setMessage("You clicked textdemo2.")
+                                .setMessage("You clicked testdemo2.")
                                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                     }
                                 }).show();
+                        break;
+                    case "MapActivity":
+                        new AlertDialog.Builder(demoContext)
+                                .setTitle("DEMO")
+                                .setMessage("Go MapActivity?")
+                                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Intent intent = new Intent();
+                                        intent.setClass(DemoActivity.this, MapsActivity.class);
+                                        startActivity(intent);
+                                    }
+                                }).setNegativeButton("Cancel", null).show();
                         break;
                     default:
                 }
