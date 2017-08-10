@@ -12,7 +12,7 @@ import com.example.zhiyang.myapplication.util.GlobalData;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button pressMeBtn, logoutBtn;
+    private Button pressMeBtn, logoutBtn, demoBtn;
     private TextView helloWorldTextView;
 
 
@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
         pressMeBtn = (Button) findViewById(R.id.pressMeBtn);
         logoutBtn = (Button) findViewById(R.id.logoutBtn);
+        demoBtn = (Button) findViewById(R.id.demoBtn);
         helloWorldTextView = (TextView) findViewById(R.id.helloWorldTextView);
 
         if (GlobalData.isLogin(getApplicationContext())) {
@@ -44,6 +45,15 @@ public class MainActivity extends AppCompatActivity {
                 intent.setClass(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+
+        demoBtn.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, DemoActivity.class);
+                startActivity(intent);
             }
         });
 
