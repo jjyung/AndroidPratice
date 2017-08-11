@@ -33,9 +33,21 @@ public class GlobalData {
         }
     }
 
+    public static void removeSharePreference(Context context, String key) {
+        if (context != null) {
+            SharedPreferences sharedPreferences = context.getSharedPreferences(sharePreferenceKey, sharePreferenceMode);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.remove(key);
+            editor.commit();
+        }
+    }
+
     public static boolean isLogin(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(sharePreferenceKey, sharePreferenceMode);
         return sharedPreferences.contains(emailKey);
     }
 
+    public static void clearLogin(Context context) {
+        removeSharePreference(context, emailKey);
+    }
 }
