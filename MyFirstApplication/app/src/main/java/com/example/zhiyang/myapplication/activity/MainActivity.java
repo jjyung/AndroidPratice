@@ -24,6 +24,7 @@ import com.example.zhiyang.myapplication.util.GlobalData;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    // components of content_main
     private Button pressMeBtn, demoBtn;
     private TextView helloWorldTextView;
 
@@ -36,7 +37,6 @@ public class MainActivity extends AppCompatActivity
 
         pressMeBtn = (Button) findViewById(R.id.pressMeBtn);
         demoBtn = (Button) findViewById(R.id.demoBtn);
-        helloWorldTextView = (TextView) findViewById(R.id.helloWorldTextView);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -46,18 +46,17 @@ public class MainActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         if (GlobalData.isLogin(getApplicationContext())) {
-            helloWorldTextView.setText("Hello, " + GlobalData.getSharePreferences(getApplicationContext(), GlobalData.emailKey) + ".");
+            initVew();
         }
 
         pressMeBtn.setOnClickListener(new Button.OnClickListener() {
@@ -109,29 +108,51 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    /* Called whenever we call invalidateOptionsMenu() */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        String email = GlobalData.getSharePreferences(getApplicationContext(), GlobalData.emailKey);
+
+        TextView textView = (TextView) findViewById(R.id.nav_header_main_email);
+        if (textView != null)textView.setText(email);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        switch (id) {
+            case R.id.nav_camera:
+                // Handle the camera action
+                break;
+            case R.id.nav_gallery:
+                break;
+            case  R.id.nav_slideshow:
+                break;
+            case R.id.nav_manage:
+                break;
+            case R.id.nav_share:
+                break;
+            case R.id.nav_send:
+                break;
+            case R.id.nav_logout:
+                logout();
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void initVew() {
+        String email = GlobalData.getSharePreferences(getApplicationContext(), GlobalData.emailKey);
+        helloWorldTextView = (TextView) findViewById(R.id.helloWorldTextView);
+        helloWorldTextView.setText("Hello, " + email + ".");
     }
 
     public void logout() {
