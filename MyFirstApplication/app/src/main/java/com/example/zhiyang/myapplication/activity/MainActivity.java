@@ -3,6 +3,7 @@ package com.example.zhiyang.myapplication.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -21,24 +22,35 @@ import android.widget.TextView;
 import com.example.zhiyang.myapplication.R;
 import com.example.zhiyang.myapplication.util.GlobalData;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    // components of content_main
-    private Button pressMeBtn, demoBtn;
-    private TextView helloWorldTextView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.helloWorldTextView)
+    TextView helloWorldTextView;
+    @BindView(R.id.pressMeBtn)
+    Button pressMeBtn;
+    @BindView(R.id.demoBtn)
+    Button demoBtn;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+    @BindView(R.id.nav_view)
+    NavigationView navView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        pressMeBtn = (Button) findViewById(R.id.pressMeBtn);
-        demoBtn = (Button) findViewById(R.id.demoBtn);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,34 +58,17 @@ public class MainActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navView.setNavigationItemSelectedListener(this);
 
         if (GlobalData.isLogin(getApplicationContext())) {
             initVew();
         }
-
-        pressMeBtn.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                helloWorldTextView.setText("Stay Hungry, Stay Foolish.");
-            }
-        });
-
-        demoBtn.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setClass(MainActivity.this, DemoActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -114,14 +109,14 @@ public class MainActivity extends AppCompatActivity
         String email = GlobalData.getSharePreferences(getApplicationContext(), GlobalData.emailKey);
 
         TextView textView = (TextView) findViewById(R.id.nav_header_main_email);
-        if (textView != null)textView.setText(email);
+        if (textView != null) textView.setText(email);
 
         return super.onPrepareOptionsMenu(menu);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -131,7 +126,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_gallery:
                 break;
-            case  R.id.nav_slideshow:
+            case R.id.nav_slideshow:
                 break;
             case R.id.nav_manage:
                 break;
@@ -142,6 +137,8 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_logout:
                 logout();
                 break;
+            default:
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -151,7 +148,6 @@ public class MainActivity extends AppCompatActivity
 
     public void initVew() {
         String email = GlobalData.getSharePreferences(getApplicationContext(), GlobalData.emailKey);
-        helloWorldTextView = (TextView) findViewById(R.id.helloWorldTextView);
         helloWorldTextView.setText("Hello, " + email + ".");
     }
 
@@ -172,4 +168,17 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @OnClick({R.id.pressMeBtn, R.id.demoBtn})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.pressMeBtn:
+                helloWorldTextView.setText("Stay Hungry, Stay Foolish.");
+                break;
+            case R.id.demoBtn:
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, DemoActivity.class);
+                startActivity(intent);
+                break;
+        }
+    }
 }
