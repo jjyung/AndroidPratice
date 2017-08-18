@@ -48,6 +48,7 @@ public class DemoActivity extends AppCompatActivity {
         demoListView.setOnItemClickListener(getItemClickListener());
     }
 
+    // TODO SparseArray instead HashMap ?
     private List<HashMap<String, String>> getDataList() {
         List<HashMap<String, String>> dataList = new ArrayList<>();
 
@@ -58,12 +59,17 @@ public class DemoActivity extends AppCompatActivity {
         dataList.add(element);
         // test2
         element = new HashMap<>();
-        element.put("name", "TESTDENO2");
+        element.put("name", "TESTDEMO2");
         dataList.add(element);
-        // MapActivity
+        // Map
         element = new HashMap<>();
-        element.put("name", "MapActivity");
+        element.put("name", "Map");
         dataList.add(element);
+        // Sheet
+        element = new HashMap<>();
+        element.put("name", "Sheet");
+        dataList.add(element);
+
 
         return dataList;
     }
@@ -84,7 +90,7 @@ public class DemoActivity extends AppCompatActivity {
                                     }
                                 }).show();
                         break;
-                    case "TESTDENO2":
+                    case "TESTDEMO2":
                         new AlertDialog.Builder(demoContext)
                                 .setTitle("TESTDEMO2")
                                 .setMessage("You clicked testdemo2.")
@@ -94,15 +100,28 @@ public class DemoActivity extends AppCompatActivity {
                                     }
                                 }).show();
                         break;
-                    case "MapActivity":
+                    case "Map":
                         new AlertDialog.Builder(demoContext)
                                 .setTitle("DEMO")
-                                .setMessage("Go MapActivity?")
+                                .setMessage("Go to the Map demo?")
                                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         Intent intent = new Intent();
                                         intent.setClass(DemoActivity.this, MapsActivity.class);
+                                        startActivity(intent);
+                                    }
+                                }).setNegativeButton("Cancel", null).show();
+                        break;
+                    case "Sheet":
+                        new AlertDialog.Builder(demoContext)
+                                .setTitle("DEMO")
+                                .setMessage("Go to the Sheet Demo?")
+                                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Intent intent = new Intent();
+                                        intent.setClass(DemoActivity.this, SheetActivity.class);
                                         startActivity(intent);
                                     }
                                 }).setNegativeButton("Cancel", null).show();
